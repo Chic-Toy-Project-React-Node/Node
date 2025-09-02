@@ -5,6 +5,54 @@ const User = require("../models/User.js");
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Friends
+ *   description: 친구 관리 API
+ */
+
+/**
+ * @swagger
+ * /api/friends:
+ *   get:
+ *     summary: 내 친구 목록 조회
+ *     description: 현재 로그인한 사용자의 친구 목록을 조회합니다.
+ *     tags: [Friends]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 친구 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: 친구 수
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *                   description: 친구 목록
+ *                 message:
+ *                   type: string
+ *                   description: 메시지 (친구가 없을 때)
+ *       401:
+ *         description: 인증 필요
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get("/", async (req, res) => {
   try {
     if (!req.user?.id) {
@@ -31,6 +79,43 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/friends/{userId}:
+ *   get:
+ *     summary: 사용자 검색
+ *     description: 친구 추가를 위해 사용자를 검색합니다.
+ *     tags: [Friends]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: 검색할 사용자 ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 사용자 검색 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: 잘못된 요청
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: 사용자를 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get(
   "/:userId",
   asyncHandler(async (req, res) => {
@@ -52,6 +137,73 @@ router.get(
   })
 );
 
+/**
+ * @swagger
+ * /api/friends/me/{friendId}:
+ *   post:
+ *     summary: 친구 추가
+ *     description: 현재 로그인한 사용자의 친구 목록에 새로운 친구를 추가합니다.
+ *     tags: [Friends]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: friendId
+ *         required: true
+ *         description: 추가할 친구의 사용자 ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: 친구 추가 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Friend added"
+ *                 friendId:
+ *                   type: string
+ *                   description: 추가된 친구 ID
+ *       400:
+ *         description: 잘못된 요청
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: 인증 필요
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: 사용자를 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       409:
+ *         description: 이미 친구임
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "이미 친구입니다."
+ *                 friendId:
+ *                   type: string
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post("/me/:friendId", async (req, res) => {
   try {
     if (!req.user?.id) {
@@ -89,6 +241,55 @@ router.post("/me/:friendId", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/friends/me/{friendId}:
+ *   delete:
+ *     summary: 친구 삭제
+ *     description: 현재 로그인한 사용자의 친구 목록에서 친구를 삭제합니다.
+ *     tags: [Friends]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: friendId
+ *         required: true
+ *         description: 삭제할 친구의 사용자 ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 친구 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Friend removed"
+ *                 friendId:
+ *                   type: string
+ *                   description: 삭제된 친구 ID
+ *       401:
+ *         description: 인증 필요
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: 사용자를 찾을 수 없음 또는 친구가 아님
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.delete("/me/:friendId", async (req, res) => {
   try {
     if (!req.user?.id) {

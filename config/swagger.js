@@ -159,6 +159,139 @@ const options = {
             },
           },
         },
+        Friend: {
+          type: "object",
+          required: ["userId", "friendId"],
+          properties: {
+            id: {
+              type: "string",
+              description: "친구 관계 ID",
+            },
+            userId: {
+              type: "string",
+              description: "사용자 ID",
+            },
+            friendId: {
+              type: "string",
+              description: "친구 사용자 ID",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              description: "친구 추가일시",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              description: "수정일시",
+            },
+          },
+        },
+        Schedule: {
+          type: "object",
+          required: ["lectureId", "lectureTimeId", "dayOfWeek"],
+          properties: {
+            lectureId: {
+              type: "string",
+              description: "강의 ID",
+            },
+            lectureTimeId: {
+              type: "string",
+              description: "강의 시간 ID",
+            },
+            dayOfWeek: {
+              type: "integer",
+              minimum: 0,
+              maximum: 6,
+              description: "요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)",
+            },
+            classroom: {
+              type: "string",
+              description: "강의실",
+            },
+          },
+        },
+        WeeklySchedule: {
+          type: "object",
+          properties: {
+            0: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "일요일 시간표",
+            },
+            1: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "월요일 시간표",
+            },
+            2: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "화요일 시간표",
+            },
+            3: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "수요일 시간표",
+            },
+            4: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "목요일 시간표",
+            },
+            5: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "금요일 시간표",
+            },
+            6: {
+              type: "array",
+              items: { $ref: "#/components/schemas/ScheduleItem" },
+              description: "토요일 시간표",
+            },
+          },
+        },
+        ScheduleItem: {
+          type: "object",
+          properties: {
+            lectureId: {
+              type: "string",
+              description: "강의 ID",
+            },
+            lectureName: {
+              type: "string",
+              description: "강의명",
+            },
+            professor: {
+              type: "string",
+              description: "교수명",
+            },
+            credit: {
+              type: "number",
+              description: "학점",
+            },
+            department: {
+              type: "string",
+              description: "개설학과",
+            },
+            startTime: {
+              type: "string",
+              description: "시작 시간",
+            },
+            endTime: {
+              type: "string",
+              description: "종료 시간",
+            },
+            lectureNumber: {
+              type: "string",
+              description: "강의 번호",
+            },
+            classroom: {
+              type: "string",
+              description: "강의실",
+            },
+          },
+        },
         Error: {
           type: "object",
           properties: {
