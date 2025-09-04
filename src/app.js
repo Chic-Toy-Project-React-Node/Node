@@ -72,6 +72,10 @@ app.use("/api/users", require("../routes/users"));
 app.use("/api/auth", require("../routes/auth")); // 인증 라우터 추가
 app.use("/api/lectures", require("../routes/lectures"));
 app.use("/api/grades", require("../routes/grades"));
+app.use("/api/friends", require("../routes/friend"));
+app.use("/api/schedule", require("../routes/schedule"));
+app.use("/api/comments", require("../routes/comment"));
+app.use("/api/posts", require("../routes/post"));
 
 // 404 에러 핸들링
 app.use("*", (req, res) => {

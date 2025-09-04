@@ -1,98 +1,128 @@
-# Node.js Express 백엔드 프로젝트
+# CHIC 에브리타임 웹 페이지 클론코딩 프로젝트
 
-Express.js를 사용한 Node.js 백엔드 API 서버입니다.
+Node.js와 Express.js를 사용한 에브리타임 웹 페이지 클론코딩 프로젝트의 백엔드 API 서버입니다.
 
-## 🚀 시작하기
+## 🚀 빠른 시작
 
 ### 사전 요구사항
 
-- Node.js (v14 이상)
-- npm 또는 yarn
+- **Node.js**
+- **npm**
+- **MongoDB Atlas** 계정 (또는 로컬 MongoDB)
 
-### 설치
-
-1. 의존성 설치
+### 1. 프로젝트 클론 및 의존성 설치
 
 ```bash
+# 프로젝트 클론 (또는 다운로드)
+git clone https://github.com/Chic-Toy-Project-React-Node/Node.git
+cd Node
+
+# 의존성 설치
 npm install
 ```
 
-2. 개발 서버 실행
+### 2. MongoDB Atlas 설정
+
+#### 2.1 MongoDB Atlas 계정 생성 및 클러스터 설정
+
+1. [MongoDB Atlas](https://www.mongodb.com/atlas) 에 가입/로그인
+2. 새 프로젝트 생성
+3. 무료 클러스터(M0 Sandbox) 생성
+4. 클러스터 이름 설정
+5. 클라우드 제공업체 및 지역 선택 (가장 가까운 지역 권장)
+
+#### 2.2 데이터베이스 사용자 생성
+
+1. Database Access 메뉴에서 "Add New Database User" 클릭
+2. Authentication Method: Password 선택
+3. 사용자명과 비밀번호 설정 (예: `admin` / `your_password`)
+4. Database User Privileges: "Atlas admin" 선택
+5. "Add User" 클릭
+
+#### 2.3 네트워크 액세스 설정
+
+1. Network Access 메뉴에서 "Add IP Address" 클릭
+2. "Allow Access from Anywhere" 선택
+   - 또는 특정 IP 주소 설정
+3. "Confirm" 클릭
+
+#### 2.4 연결 문자열 획득
+
+1. Clusters 메뉴에서 "Connect" 버튼 클릭
+2. "Connect your application" 선택
+3. Driver: Node.js, Version: 4.1 or later 선택
+4. 연결 문자열 복사 (예시):
+   ```
+   mongodb+srv://<username>:<password>@university-cluster.xxxxx.mongodb.net/?retryWrites=true&w=majority
+   ```
+
+### 3. 환경변수 설정
+
+프로젝트 루트에 `.env` 파일을 생성하고 다음 내용을 입력하세요:
 
 ```bash
-npm run dev
+# MongoDB 설정
+MONGODB_URI=mongodb+srv://admin:your_password@university-cluster.xxxxx.mongodb.net/university_db?retryWrites=true&w=majority
+
+# 서버 설정
+PORT=3000
+
+# JWT 설정 (인증용)
+JWT_SECRET=암거나입력하세요
 ```
 
-3. 프로덕션 서버 실행
+이때 MONGODB_URI에는 복사한 연결 문자열 추가해주시고,
+문자열 내에서 <password> 부분을 2-2에서 생성했던 사용자 비밀번호로 변경해주세요.
+
+### 4. MongoDB 연결 테스트
 
 ```bash
+# MongoDB 연결 상태 확인
+npm run check-mongo
+```
+
+성공적으로 연결되면 다음과 같은 메시지가 출력됩니다:
+
+```
+🔍 MongoDB 연결 시도 중...
+📍 연결 URI: mongodb+srv://...
+🍃 MongoDB 연결 성공: university-cluster-shard-00-00.xxxxx.mongodb.net
+📦 데이터베이스: university_db
+✅ Mongoose가 MongoDB에 연결되었습니다.
+```
+
+### 5. 서버 실행
+
+```bash
+# 개발 모드 (nodemon 사용 - 파일 변경 시 자동 재시작)
+npm run dev
+
+# 또는 프로덕션 모드
 npm start
 ```
 
-## 📁 프로젝트 구조
+서버가 성공적으로 시작되면:
 
 ```
-├── src/
-│   └── app.js          # 메인 애플리케이션 파일
-├── routes/             # API 라우터
-│   └── users.js        # 사용자 관련 라우터
-├── controllers/        # 컨트롤러 (비즈니스 로직)
-│   └── userController.js
-├── middleware/         # 커스텀 미들웨어
-│   └── auth.js         # 인증 미들웨어
-├── models/            # 데이터 모델 (추후 사용)
-├── config/            # 설정 파일
-│   └── config.js      # 애플리케이션 설정
-└── package.json       # 프로젝트 설정
+🚀 서버가 포트 3000에서 실행 중입니다.
+📍 환경: development
+🌐 URL: http://localhost:3000
 ```
 
-## 🛠 기본 설정된 기능
+### 6. API 테스트
 
-- **Express.js** - 웹 프레임워크
-- **CORS** - Cross-Origin Resource Sharing 지원
-- **Helmet** - 보안 헤더 설정
-- **Morgan** - HTTP 요청 로깅
-- **dotenv** - 환경변수 관리
-- **Nodemon** - 개발 시 자동 재시작
+브라우저에서 `http://localhost:3000`에 접속하면 다음 응답을 확인할 수 있습니다:
 
-## 📚 API 엔드포인트
+```json
+{
+  "message": "Express 서버가 정상적으로 실행되고 있습니다!",
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "environment": "development"
+}
+```
 
-### 기본 엔드포인트
+## 📚 API 문서
 
-- `GET /` - 서버 상태 확인
+### Swagger UI 문서
 
-### 사용자 관리 (예시)
-
-- `GET /api/users` - 모든 사용자 조회
-- `GET /api/users/:id` - 특정 사용자 조회
-- `POST /api/users` - 새 사용자 생성
-- `PUT /api/users/:id` - 사용자 정보 수정
-- `DELETE /api/users/:id` - 사용자 삭제
-
-## 🔧 개발 가이드
-
-### 새로운 라우터 추가
-
-1. `routes/` 폴더에 새 라우터 파일 생성
-2. `controllers/` 폴더에 해당 컨트롤러 생성
-3. `src/app.js`에서 라우터 등록
-
-### 환경변수 설정
-
-`config/config.js` 파일에서 환경변수를 관리합니다.
-
-## 🌟 다음 단계
-
-이 기본 설정 이후에 다음과 같은 기능들을 추가할 수 있습니다:
-
-- 데이터베이스 연결 (MongoDB, PostgreSQL, MySQL 등)
-- JWT 인증 시스템
-- 입력 데이터 검증 (Joi, express-validator 등)
-- API 문서화 (Swagger)
-- 테스트 코드 작성 (Jest, Mocha 등)
-- 로깅 시스템 (Winston)
-- 파일 업로드 처리 (Multer)
-
-## 📄 라이선스
-
-ISC
+서버 실행 후 `http://localhost:3000/api-docs`에서 인터랙티브한 API 문서를 확인할 수 있습니다.
