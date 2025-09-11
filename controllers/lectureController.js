@@ -1,9 +1,14 @@
 const Lecture = require("../models/Lecture");
 const LectureComment = require("../models/LectureComment");
+const { v4: uuidv4 } = require("uuid");
 
 exports.createLecture = async (req, res, next) => {
   try {
-    const lecture = await Lecture.create(req.body);
+    const lectureData = {
+      _id: uuidv4(), // UUID로 _id 생성
+      ...req.body
+    };
+    const lecture = await Lecture.create(lectureData);
     res.status(201).json({ ok: true, data: lecture });
   } catch (err) {
     next(err);
@@ -48,9 +53,13 @@ exports.createLectureComment = async (req, res, next) => {
       return res.status(404).json({ ok: false, message: "Lecture not found" });
     }
 
-    req.body.lectureId = lectureId;
+    const commentData = {
+      _id: uuidv4(), // UUID로 _id 생성
+      ...req.body,
+      lectureId: lectureId
+    };
 
-    const comment = await LectureComment.create(req.body);
+    const comment = await LectureComment.create(commentData);
     res.status(201).json({ ok: true, data: comment });
   } catch (err) {
     next(err);

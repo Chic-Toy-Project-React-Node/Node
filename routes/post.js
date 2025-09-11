@@ -105,7 +105,7 @@ router.get("/:id", getPostById);
  * /api/posts:
  *   post:
  *     summary: 새 게시글 생성
- *     description: 새로운 게시글을 생성합니다.
+ *     description: 새로운 게시글을 생성합니다. _id는 서버에서 자동으로 생성됩니다.
  *     tags: [Posts]
  *     security:
  *       - bearerAuth: []
@@ -118,13 +118,26 @@ router.get("/:id", getPostById);
  *             required:
  *               - title
  *               - content
+ *               - category
+ *               - userId
  *             properties:
  *               title:
  *                 type: string
  *                 description: 게시글 제목
+ *                 example: "안녕하세요 첫 게시글입니다"
  *               content:
  *                 type: string
  *                 description: 게시글 내용
+ *                 example: "게시글 내용입니다."
+ *               category:
+ *                 type: string
+ *                 description: 게시글 카테고리
+ *                 enum: ["자유", "질문", "정보", "스터디", "취업"]
+ *                 example: "자유"
+ *               userId:
+ *                 type: string
+ *                 description: 작성자 ID
+ *                 example: "student123"
  *     responses:
  *       201:
  *         description: 게시글 생성 성공
@@ -191,9 +204,16 @@ router.post("/", createPost);
  *               title:
  *                 type: string
  *                 description: 게시글 제목
+ *                 example: "수정된 제목"
  *               content:
  *                 type: string
  *                 description: 게시글 내용
+ *                 example: "수정된 내용"
+ *               category:
+ *                 type: string
+ *                 description: 게시글 카테고리
+ *                 enum: ["자유", "질문", "정보", "스터디", "취업"]
+ *                 example: "질문"
  *     responses:
  *       200:
  *         description: 게시글 수정 성공

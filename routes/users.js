@@ -77,20 +77,36 @@ router.get("/:userId", userController.getUserById);
  *           schema:
  *             type: object
  *             required:
- *               - username
- *               - email
+ *               - userId
+ *               - userName
  *               - password
+ *               - nickname
+ *               - schoolName
  *             properties:
- *               username:
+ *               userId:
  *                 type: string
- *                 description: 사용자 이름
- *               email:
+ *                 description: 사용자 ID (로그인 시 사용)
+ *                 example: "student123"
+ *               userName:
  *                 type: string
- *                 format: email
- *                 description: 이메일 주소
+ *                 description: 사용자 실제 이름
+ *                 example: "홍길동"
  *               password:
  *                 type: string
  *                 description: 비밀번호
+ *                 example: "mySecurePassword123"
+ *               nickname:
+ *                 type: string
+ *                 description: 사용자 닉네임
+ *                 example: "길동이"
+ *               schoolName:
+ *                 type: string
+ *                 description: 소속 학교명
+ *                 example: "서울대학교"
+ *               points:
+ *                 type: number
+ *                 description: 사용자 포인트
+ *                 example: 0
  *     responses:
  *       201:
  *         description: 사용자 생성 성공
@@ -128,16 +144,26 @@ router.post("/", userController.createUser);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               userName:
  *                 type: string
- *                 description: 사용자 이름
- *               email:
- *                 type: string
- *                 format: email
- *                 description: 이메일 주소
+ *                 description: 사용자 실제 이름
+ *                 example: "김철수"
  *               password:
  *                 type: string
  *                 description: 비밀번호
+ *                 example: "newPassword123"
+ *               nickname:
+ *                 type: string
+ *                 description: 사용자 닉네임
+ *                 example: "철수왕"
+ *               schoolName:
+ *                 type: string
+ *                 description: 소속 학교명
+ *                 example: "연세대학교"
+ *               points:
+ *                 type: number
+ *                 description: 사용자 포인트
+ *                 example: 150
  *     responses:
  *       200:
  *         description: 사용자 정보 수정 성공

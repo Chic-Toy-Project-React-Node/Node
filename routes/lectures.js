@@ -14,6 +14,7 @@ const lectureCtrl = require("../controllers/lectureController");
  * /api/lectures:
  *   post:
  *     summary: 새 강의 생성
+ *     description: 새로운 강의를 생성합니다. _id는 서버에서 자동으로 생성됩니다.
  *     tags: [Lectures]
  *     requestBody:
  *       required: true
@@ -22,18 +23,34 @@ const lectureCtrl = require("../controllers/lectureController");
  *           schema:
  *             type: object
  *             required:
- *               - title
- *               - description
+ *               - lectureName
+ *               - professor
+ *               - credit
+ *               - department
+ *               - userId
  *             properties:
- *               title:
+ *               lectureName:
  *                 type: string
- *                 description: 강의 제목
- *               description:
+ *                 description: 강의명
+ *                 example: "자료구조론"
+ *               professor:
  *                 type: string
- *                 description: 강의 설명
- *               instructor:
+ *                 description: 교수명
+ *                 example: "김교수"
+ *               credit:
+ *                 type: number
+ *                 description: 학점
+ *                 minimum: 0.5
+ *                 maximum: 6
+ *                 example: 3
+ *               department:
  *                 type: string
- *                 description: 강사명
+ *                 description: 개설학과
+ *                 example: "컴퓨터공학과"
+ *               userId:
+ *                 type: string
+ *                 description: 강의를 등록한 사용자 ID
+ *                 example: "student123"
  *     responses:
  *       201:
  *         description: 강의 생성 성공
@@ -108,6 +125,7 @@ router.get("/:id", lectureCtrl.getLectureById);
  * /api/lectures/{lectureId}/comments:
  *   post:
  *     summary: 강의에 댓글 추가
+ *     description: 강의에 새로운 평가 댓글을 추가합니다. _id는 서버에서 자동으로 생성됩니다.
  *     tags: [Lectures]
  *     parameters:
  *       - in: path
@@ -123,15 +141,29 @@ router.get("/:id", lectureCtrl.getLectureById);
  *           schema:
  *             type: object
  *             required:
- *               - content
+ *               - evaluationContent
+ *               - rating
+ *               - semester
  *               - author
  *             properties:
- *               content:
+ *               evaluationContent:
  *                 type: string
- *                 description: 댓글 내용
+ *                 description: 평가 내용
+ *                 example: "정말 좋은 강의입니다. 교수님이 친절하세요."
+ *               rating:
+ *                 type: number
+ *                 description: 평점 (1-5)
+ *                 minimum: 1
+ *                 maximum: 5
+ *                 example: 5
+ *               semester:
+ *                 type: string
+ *                 description: 수강 학기
+ *                 example: "2024-1"
  *               author:
  *                 type: string
- *                 description: 작성자
+ *                 description: 작성자 ID
+ *                 example: "student123"
  *     responses:
  *       201:
  *         description: 댓글 생성 성공

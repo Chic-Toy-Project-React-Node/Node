@@ -22,16 +22,17 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - email
+ *               - userId
  *               - password
  *             properties:
- *               email:
+ *               userId:
  *                 type: string
- *                 format: email
- *                 description: 사용자 이메일
+ *                 description: 사용자 ID
+ *                 example: "student123"
  *               password:
  *                 type: string
  *                 description: 사용자 비밀번호
+ *                 example: "mySecurePassword123"
  *     responses:
  *       200:
  *         description: 로그인 성공
@@ -68,20 +69,32 @@ router.post("/login", loginController.loginUser);
  *           schema:
  *             type: object
  *             required:
- *               - username
- *               - email
+ *               - userId
+ *               - userName
  *               - password
+ *               - nickname
+ *               - schoolName
  *             properties:
- *               username:
+ *               userId:
  *                 type: string
- *                 description: 사용자 이름
- *               email:
+ *                 description: 사용자 ID (로그인 시 사용)
+ *                 example: "student123"
+ *               userName:
  *                 type: string
- *                 format: email
- *                 description: 사용자 이메일
+ *                 description: 사용자 실제 이름
+ *                 example: "홍길동"
  *               password:
  *                 type: string
  *                 description: 사용자 비밀번호
+ *                 example: "mySecurePassword123"
+ *               nickname:
+ *                 type: string
+ *                 description: 사용자 닉네임
+ *                 example: "길동이"
+ *               schoolName:
+ *                 type: string
+ *                 description: 소속 학교명
+ *                 example: "서울대학교"
  *     responses:
  *       201:
  *         description: 회원가입 성공

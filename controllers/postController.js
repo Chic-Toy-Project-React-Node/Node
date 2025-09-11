@@ -1,5 +1,6 @@
 //게시물 CRUD 로직처리
 const asyncHandler = require("express-async-handler");
+const { v4: uuidv4 } = require("uuid");
 const Post = require("../models/Post"); //게시물
 const comment = require("../models/PostComment"); //댓글
 
@@ -26,16 +27,18 @@ const getPostById = asyncHandler(async (req, res) => {
 
 //POST 생성
 const createPost = asyncHandler(async (req, res) => {
-  const { title, content, category } = req.body;
-  if (!title || !content || !category) {
+  const { title, content, category, userId } = req.body;
+  if (!title || !content || !category || !userId) {
     return res
       .status(400)
-      .json({ message: "제목, 내용, 카테고리를 모두 입력해주세요." });
+      .json({ message: "제목, 내용, 카테고리, 작성자 ID를 모두 입력해주세요." });
   }
   const post = await Post.create({
+    _id: uuidv4(), // UUID로 _id 생성
     title,
     content,
     category,
+    userId,
   });
   res.status(201).json({ message: "게시물이 작성되었습니다.", post });
 });
